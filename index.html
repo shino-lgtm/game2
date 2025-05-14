@@ -98,7 +98,7 @@
   <div id="confettiContainer"></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    window.onload = function() {
       let numberToGuess = Math.floor(Math.random() * 100) + 1;
       let attempts = 0;
       const maxAttempts = 10;
@@ -107,7 +107,7 @@
       const result = document.getElementById("result");
       const button = document.getElementById("submitBtn");
 
-      button.addEventListener("click", () => {
+      button.addEventListener("click", function() {
         const guess = parseInt(input.value, 10);
         attempts++;
 
@@ -148,7 +148,7 @@
           setTimeout(() => dot.remove(), 2000);
         }
       }
-    });
+    };
   </script>
 </body>
 </html>
