@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎯 数当てゲーム</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+      color: #333;
+      text-align: center;
+      padding: 40px;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #fff;
+      text-shadow: 1px 1px 4px #000;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #f0f0f0;
+    }
+
+    input, button {
+      padding: 12px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    input {
+      width: 120px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1.4em;
+      color: #fff;
+      text-shadow: 1px 1px 2px #444;
+    }
+
+    .confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #fff;
+      animation: fall 1s ease-out forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 数当てゲーム！</h1>
+  <p>1〜100の数字を当ててみてね！</p>
+  <input type="number" id="guessInput" placeholder="数字を入力" />
+  <button onclick="checkGuess()">送信</button>
+  <div id="result"></div>
+  <div class="confetti" id="confettiContainer"></div>
+
+  <script>
+    let numberToGuess = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const maxAttempts = 10;
+
+    function checkGuess() {
+      const input = document.getElementById("guessInput");
+      const result = document.getElementById("result");
+      const guess = parseInt(input.value, 10);
+      attempts++;
+
+      if (isNaN(guess)) {
+        result.textContent = "数字を入力してください。";
+        return;
+      }
+
+      if (guess < numberToGuess) {
+        result.textContent = "もっと大きい数字です。";
+      } else if (guess > numberToGuess) {
+        result.textContent = "もっと小さい数字です。";
+      } else {
+        result.textContent = `🎉 正解！${attempts}回で当たりました！`;
+        input.disabled = true;
+        showConfetti();
+        return;
+      }
+
+      if (attempts >= maxAttempts) {
+        result.textContent = `😢 残念！正解は ${numberToGuess} でした。`;
+        input.disabled = true;
+      }
+    }
+
+    function showConfetti() {
+      const confettiContainer = document.getElementById("confettiContainer");
+      for (let i = 0; i < 100; i++) {
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        dot.style.left = Math.random() * 100 + "vw";
+        dot.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        dot.style.animationDuration = (Math.random() + 0.5) + "s";
+        confettiContainer.appendChild(dot);
+
+        setTimeout(() => dot.remove(), 1500);
+      }
+    }
+  </script>
+</body>
+</html>
 
