@@ -77,4 +77,78 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      back
+      background-color: #fff;
+      animation: fall 1.5s ease-out forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 数当てゲーム</h1>
+  <p>1〜100の数字を当ててみてね！</p>
+  <input type="number" id="guessInput" placeholder="数字を入力" />
+  <button id="submitBtn">送信</button>
+  <div id="result"></div>
+  <div id="confettiContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let numberToGuess = Math.floor(Math.random() * 100) + 1;
+      let attempts = 0;
+      const maxAttempts = 10;
+
+      const input = document.getElementById("guessInput");
+      const result = document.getElementById("result");
+      const button = document.getElementById("submitBtn");
+
+      button.addEventListener("click", () => {
+        const guess = parseInt(input.value, 10);
+        attempts++;
+
+        if (isNaN(guess)) {
+          result.textContent = "数字を入力してください。";
+          return;
+        }
+
+        if (guess < numberToGuess) {
+          result.textContent = "もっと大きい数字です。";
+        } else if (guess > numberToGuess) {
+          result.textContent = "もっと小さい数字です。";
+        } else {
+          result.textContent = `🎉 正解！${attempts}回で当たりました！`;
+          input.disabled = true;
+          button.disabled = true;
+          showConfetti();
+          return;
+        }
+
+        if (attempts >= maxAttempts) {
+          result.textContent = `😢 残念！正解は ${numberToGuess} でした。`;
+          input.disabled = true;
+          button.disabled = true;
+        }
+      });
+
+      function showConfetti() {
+        const container = document.getElementById("confettiContainer");
+        for (let i = 0; i < 150; i++) {
+          const dot = document.createElement("div");
+          dot.className = "dot";
+          dot.style.left = Math.random() * 100 + "vw";
+          dot.style.top = "0px";
+          dot.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+          dot.style.animationDuration = (Math.random() + 0.5) + "s";
+          container.appendChild(dot);
+          setTimeout(() => dot.remove(), 2000);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
